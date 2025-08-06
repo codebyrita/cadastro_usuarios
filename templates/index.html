@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Cadastro de Usuários</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
 </head>
 <body>
     <h1>Sistema de Cadastro de Usuários</h1>
@@ -19,24 +18,24 @@
                 <th>Email</th>
                 <th>Tipo</th>
                 <th>Status</th>
+                <th>Ações</th>
             </tr>
-          <tr>
-            <th>Ações</th>
-    <td>{{ usuario[0] }}</td>
-    <td>{{ usuario[1] }}</td>
-    <td>{{ usuario[2] }}</td>
-    <td>{{ usuario[3] }}</td>
-    <td>{{ usuario[4] }}</td>
-    <td>
-        <a href="/editar/{{ usuario[0] }}">Editar</a> |
-        <a href="/excluir/{{ usuario[0] }}" onclick="return confirm('Tem certeza que deseja excluir este usuário?')">Excluir</a>
-    </td>
-</tr>
-
+            {% for usuario in usuarios %}
+            <tr>
+                <td>{{ usuario[0] }}</td>
+                <td>{{ usuario[1] }}</td>
+                <td>{{ usuario[2] }}</td>
+                <td>{{ usuario[3] }}</td>
+                <td>{{ usuario[4] }}</td>
+                <td>
+                    <a href="/editar/{{ usuario[0] }}">Editar</a> |
+                    <a href="/excluir/{{ usuario[0] }}" onclick="return confirm('Tem certeza que deseja excluir este usuário?')">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
         </table>
     {% else %}
         <p>Nenhum usuário cadastrado ainda.</p>
     {% endif %}
 </body>
 </html>
-
