@@ -1,9 +1,14 @@
+import os, sqlite3
 from flask import Flask, render_template, request, redirect, url_for, get_flashed_messages
-import sqlite3
 import re
 
+DB_PATH = os.getenv("DB_PATH", "database.db")
+
+def get_conn():
+    return sqlite3.connect(DB_PATH)
+
 app = Flask(__name__)
-app.secret_key = 'sua_chave_secreta'  # troque por algo forte
+app.secret_key = os.getenv("SECRET_KEY", "devsecret")
 
 # ----------------- Helpers -----------------
 def get_conn():
