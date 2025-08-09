@@ -1,77 +1,298 @@
+/* Estilo geral */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f4f8;
-    padding: 40px;
-    max-width: 800px;
-    margin: auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url('/static/img/background-cadastro.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    margin: 0;
 }
 
-h1 {
-    color: #333;
-    text-align: center;
+/* Cabeçalho */
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-weight: bold;
+    font-size: 1.5rem;
 }
 
-a {
-    text-decoration: none;
-    color: #007BFF;
-}
+.card-header h2 { flex-grow: 1; }
 
-a:hover {
-    text-decoration: underline;
-}
-
-form {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-label {
-    display: block;
-    margin-top: 10px;
-}
-
-input, select, button {
-    padding: 10px;
-    width: 100%;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+/* Ícone grande no topo esquerdo */
+.header-icon {
+    font-size: 2rem;
     background: white;
-    border-radius: 10px;
-    overflow: hidden;
+    color: #0d6efd;
+    padding: 10px;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
-table th, table td {
-    padding: 12px;
-    border: 1px solid #ddd;
-    text-align: left;
+/* Botões */
+.btn { border-radius: 8px; transition: all 0.3s ease; }
+.btn:hover { transform: scale(1.03); opacity: 0.95; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+.btn-primary { background-color: #007cf0; border: none; }
+.btn-primary:hover { background-color: #005dc0; }
+.btn-success:hover { background-color: #2ecc71; }
+.btn-danger:hover { background-color: #e74c3c; }
+
+/* Campos de formulário */
+input.form-control, select.form-select { border-radius: 8px; box-shadow: none !important; }
+
+/* Alerta flash */
+.alert { border-radius: 8px; font-weight: 500; }
+
+/* Animação sutil para botões */
+.custom-hover { transition: all 0.3s ease-in-out; }
+.custom-hover:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
+
+/* Classes auxiliares (caso você use) */
+.left-card { margin-left: 3rem; margin-right: auto; max-width: 700px; }
+.align-left { margin-left: 0; margin-right: auto; max-width: 700px; }
+
+/* página não rola */
+html, body { height: 100%; overflow: hidden; }
+
+/* ------ CARD (posição perfeita preservada) ------ */
+.card{
+  --col-gap: 16px;
+  --row-gap: 8px;                            /* menos espaço vertical */
+  --inp-h: clamp(34px, 4.2vh, 40px);         /* campos mais baixos */
+  --fs: clamp(14px, 1.7vh, 16px);            /* tamanho de fonte ajustável */
+
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  border-radius: 18px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  left: clamp(160px, 20vw, 290px);
+
+  width: min(900px, 92vw);                   /* largura p/ 2 colunas */
+  padding: 16px 20px;                        /* padding reduzido */
+  font-size: var(--fs);
+
+  max-height: calc(100vh - 48px);            /* cabe na tela */
+  overflow: hidden;                          /* sem scroll interno */
 }
 
-th {
-    background-color: #007BFF;
-    color: white;
+/* ----- GRID 2 COLUNAS paralelas ----- */
+.form-grid{
+  display: grid;
+  grid-template-columns: minmax(280px,1fr) minmax(280px,1fr);
+  column-gap: var(--col-gap);
+  row-gap: var(--row-gap);
 }
 
-tr:nth-child(even) {
-    background-color: #f2f2f2;
+/* itens que precisam ocupar a linha inteira */
+.span-2{ grid-column: 1 / -1; }
+
+/* rótulos e campos compactos */
+.form-grid label{
+  display: inline-block;
+  margin: 0 0 4px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.form-grid input,
+.form-grid select{
+  height: var(--inp-h);
+  padding: 6px 10px;
+  line-height: 1.2;
+  width: 100%;
 }
 
-button {
-    background-color: #007BFF;
-    color: white;
-    cursor: pointer;
-    border: none;
+/* se a altura da tela for pequena, reduzimos levemente o card p/ caber */
+@media (max-height: 820px){ .card{ transform: translateY(-50%) scale(.96); transform-origin: center; } }
+@media (max-height: 760px){ .card{ transform: translateY(-50%) scale(.92); } }
+
+/* responsivo estreito: volta pra 1 coluna */
+@media (max-width: 860px){
+  html, body{ overflow: auto; }
+  .card{ left: 16px; right: 16px; width: auto; max-height: none; }
+  .form-grid{ grid-template-columns: 1fr; }
+  .span-2{ grid-column: auto; }
 }
 
-button:hover {
-    background-color: #0056b3;
+/* garante que cada “campo” empilhe label + input certinho */
+.campo{ display:flex; flex-direction:column; }
+
+/* olho da senha */
+.input-with-eye{ position: relative; }
+.input-with-eye .form-control{ padding-right: 42px; }
+.input-with-eye .toggle-eye{
+  position:absolute; top:50%; right:10px; transform:translateY(-50%); cursor:pointer;
+}
+
+/* deixa select e input com a mesma altura definida nas variáveis */
+.form-grid input.form-control,
+.form-grid select.form-select{ height: var(--inp-h); line-height: 1.2; }
+
+/* ───────────────────────────────────────────── */
+/* LISTA: fixa até antes da planta + scroll interno */
+/* ───────────────────────────────────────────── */
+.card-list {
+  position: fixed;
+  top: 70px;                             /* início do card */
+  left: clamp(50px, 18vw, 0px);          /* sua posição ajustada */
+  width: min(960px, 92vw);
+  padding: 0;                            /* header encosta nas bordas do card */
+
+  /* definir um limite inferior antes da planta */
+  --bottom-gap: 160px;                   /* ajuste fino: 140–200px conforme a sua tela */
+  height: calc(100vh - 70px - var(--bottom-gap));  /* card “travado” entre top e planta */
+
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  border-radius: 18px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+
+  display: flex;                         /* header + lista */
+  flex-direction: column;
+  overflow: hidden;                      /* nada vaza do card */
+}
+
+/* Cabeçalho igual ao do cadastro */
+.card-list .custom-header{
+  display:flex; align-items:center; gap:14px;
+  color:#fff; font-weight:700; font-size:1.6rem;
+  background: linear-gradient(90deg,#1aa7ff,#00d1ff);
+  border-radius: 18px 18px 0 0;
+  padding: 12px 18px;
+}
+.card-list .header-icon{
+  font-size:1.6rem; background:#fff; color:#0d6efd;
+  padding:8px; border-radius:50%;
+  box-shadow:0 2px 6px rgba(0,0,0,0.18);
+}
+
+/* Área da tabela – ocupa o restante e rola por dentro */
+.table-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: scroll; /* <<< forçado para sempre mostrar a barra */
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 0 0 12px 12px;
+
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 0 0 12px 12px;
+}
+
+/* Tabela */
+.table{ width:100%; border-collapse:collapse; }
+.table th, .table td{ padding: 12px 14px; }
+
+/* Header sticky robusto (compatibilidade) */
+.table thead{
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #e7f3ff;
+}
+.table thead th{
+  position: sticky;
+  top: 0;
+  background: #e7f3ff;
+}
+
+.table tbody tr:nth-child(odd){ background: rgba(0,0,0,0.03); }
+.table tbody tr:hover{ background: rgba(0,0,0,0.06); }
+
+/* Botões */
+.table .btn{ border-radius:8px; padding:6px 12px; border:none; }
+.table .btn-warning{ background:#f4c542; }
+.table .btn-danger{ background:#e74c3c; }
+
+/* Responsivo */
+@media (max-width: 860px){
+  .card-list{
+    left:16px; right:16px; width:auto;
+    top:60px;
+    --bottom-gap: 120px;   /* reduz gap no mobile */
+    height: calc(100vh - 60px - var(--bottom-gap));
+  }
+}
+
+
+/* Flash flutuante acima do card (create) */
+.flash-float{ z-index:9999; pointer-events:none; }
+.flash-float .flash{
+  pointer-events:auto;
+  border-radius:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.18);
+  animation: flash-in .22s ease-out forwards;
+}
+.flash-hide .flash{ animation: flash-out .3s ease-in forwards; }
+
+@keyframes flash-in { from{opacity:0; transform: translateY(-6px);} to{opacity:1; transform:none;} }
+@keyframes flash-out{ to{opacity:0; transform: translateY(-6px);} }
+
+
+/* ── EDIT: card alinhado como a LISTA ───────────────────────── */
+.card-edit{
+  position: fixed;
+  top: 70px;                              /* mesma altura da lista */
+  left: clamp(50px, 18vw, 0px);           /* mesma âncora da lista */
+  width: min(960px, 92vw);
+
+  /* altura travada até antes da planta (igual usamos na lista) */
+  --bottom-gap: 160px;
+  height: calc(100vh - 70px - var(--bottom-gap));
+
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  border-radius: 18px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* card não rola, só o corpo interno */
+}
+
+/* header igual ao dos outros cards */
+.card-edit .custom-header{
+  display:flex; align-items:center; gap:14px;
+  color:#fff; font-weight:700; font-size:1.6rem;
+  background: linear-gradient(90deg,#1aa7ff,#00d1ff);
+  border-radius: 18px 18px 0 0;
+  padding: 12px 18px;
+}
+
+/* área rolável interna (form) */
+.edit-scroll{
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;             /* rolagem só aqui */
+  padding: 16px 20px;         /* espaço interno do conteúdo */
+}
+
+/* responsivo (mesma lógica da lista) */
+@media (max-width: 860px){
+  .card-edit{
+    left:16px; right:16px; width:auto;
+    top:60px;
+    --bottom-gap: 120px;
+    height: calc(100vh - 60px - var(--bottom-gap));
+  }
+}
+.flash-float{ z-index: 9999; pointer-events: none; }
+.flash-float .flash{
+  pointer-events: auto;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.18);
+  animation: flash-in .22s ease-out forwards;
+}
+.flash-hide .flash{ animation: flash-out .3s ease-in forwards; }
+
+@keyframes flash-in { from{opacity:0; transform: translateY(-6px);} to{opacity:1; transform:none;} }
+@keyframes flash-out{ to{opacity:0; transform: translateY(-6px);} }
+
+.edit-user-form .form-group {
+    margin-bottom: 20px; /* espaço entre os campos */
 }

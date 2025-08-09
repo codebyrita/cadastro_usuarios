@@ -1,34 +1,168 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Editar Usuário</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% extends 'base.html' %}
+{% block title %}Editar Usuário{% endblock %}
 
-</head>
-<body>
-    <h1>Editar Usuário</h1>
+{% block content %}
+<script>document.body.classList.add('page-edit');</script>
 
-    <form method="POST">
-        <label>Nome:</label><br>
-        <input type="text" name="nome" value="{{ usuario[1] }}" required><br><br>
+<style>
+/* Aplica só na página de edição */
+.page-edit .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 15px; /* 20px vertical, 15px horizontal */
+}
 
-        <label>Email:</label><br>
-        <input type="email" name="email" value="{{ usuario[2] }}" required><br><br>
 
-        <label>Tipo:</label><br>
-        <select name="tipo" required>
-            <option value="Admin" {% if usuario[3] == 'Admin' %}selected{% endif %}>Admin</option>
-            <option value="Comum" {% if usuario[3] == 'Comum' %}selected{% endif %}>Comum</option>
-        </select><br><br>
+.page-edit .form-label {
+    margin-bottom: 6px; /* afasta o label do input */
+}
+</style>
 
-        <label>Status:</label><br>
-        <select name="status" required>
-            <option value="Ativo" {% if usuario[4] == 'Ativo' %}selected{% endif %}>Ativo</option>
-            <option value="Inativo" {% if usuario[4] == 'Inativo' %}selected{% endif %}>Inativo</option>
-        </select><br><br>
+{% if mensagem %}
+<div id="flash-float" class="flash-float" hidden>
+  <div class="flash alert alert-{{ mensagem_tipo or 'info' }}">{{ mensagem }}</div>
+</div>
+<script>
+  (function(){
+    const box = document.getElementById('flash-float');
+    if(!box) return;
+    function positionFlash(){
+      const card = document.querySelector('.card-edit') || document.querySelector('.card');
+      if(!card) return;
+      const r = card.getBoundingClientRect();
+      const gap = 12;
+      box.style.position = 'fixed';
+      box.style.left = r.left + 'px';
+      box.style.width = r.width + 'px';
+      box.hidden = false;
+      const h = box.offsetHeight || 0;
+      box.style.top = Math.max(10, r.top - h - gap) + 'px';
+    }
+    window.addEventListener('load', positionFlash);
+    window.addEventListener('resize', positionFlash);
+    setTimeout(()=> box.classList.add('flash-hide'), 5000);
+  })();
+</script>
+{% endif %}
 
-        <button type="submit">Salvar alterações</button>
+<div class="card-edit">
+  <div class="custom-header">
+    <i class="bi bi-pencil-square header-icon"></i>
+    <h2 class="mb-0">Editar Usuário</h2>
+  </div>
+
+  <div class="edit-scroll">
+    <form method="POST" action="{{ url_for('editar', id=usuario[0]) }}">
+      <div class="form-grid">
+        <!-- linha 1 -->
+        <div class="campo">
+          <label class="form-label">Nome completo*</label>
+          <input type="text" name="nome" class="form-control"
+                 value="{{ (usuario[1] if usuario else '') | default('') }}" required>
+        </div>
+        <div class="campo">
+          <label class="form-label">Email*</label>
+          <input type="email" name="email" class="form-control"
+                 value="{{ (usuario[2] if usuario else '') | default('') }}" required>
+        </div>
+
+        <!-- linha 2 -->
+        <div class="campo">
+          <label class="form-label">Usuário*</label>
+          <input type="text" name="usuario" class="form-control"
+                 value="{{ (usuario[3] if usuario else '') | default('') }}" required>
+        </div>
+        <div class="campo">
+          <label for="senha" class="form-label">Senha*</label>
+          <div class="input-with-eye">
+            <input
+              type="password"
+              name="senha"
+              class="form-control"
+              id="senha"
+              required
+              minlength="6"
+              maxlength="8"
+              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{6,8}$"
+              title="A senha deve ter de 6 a 8 caracteres e conter: 1 maiúscula, 1 minúscula, 1 número e 1 símbolo."
+              autocomplete="new-password"
+            />
+          </div>
+        </div>
+
+        <!-- linha 3 -->
+        <div class="campo">
+          <label class="form-label">Sexo</label>
+          {% set sexo_val = (usuario[5] if usuario else '') %}
+          <select name="sexo" class="form-select">
+            <option value="">Selecione</option>
+            <option value="Masculino" {{ 'selected' if sexo_val=='Masculino' else '' }}>Masculino</option>
+            <option value="Feminino"  {{ 'selected' if sexo_val=='Feminino'  else '' }}>Feminino</option>
+            <option value="Outro"     {{ 'selected' if sexo_val=='Outro'     else '' }}>Outro</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label class="form-label">Telefone</label>
+          <input type="tel" name="telefone" class="form-control"
+                 value="{{ (usuario[6] if usuario else '') | default('') }}">
+        </div>
+
+        <!-- linha 4 -->
+        <div class="campo">
+          <label class="form-label">Endereço</label>
+          <input type="text" name="endereco" class="form-control"
+                 value="{{ (usuario[7] if usuario else '') | default('') }}">
+        </div>
+        <div class="campo">
+          <label class="form-label">CPF*</label>
+          <input type="text" name="cpf" class="form-control"
+                 value="{{ (usuario[8] if usuario else '') | default('') }}" required>
+        </div>
+
+        <!-- linha 5 -->
+        <div class="campo">
+          <label class="form-label">Permissão*</label>
+          {% set perm_val = (usuario[9] if usuario else '') %}
+          <select name="permissao" class="form-select" required>
+            <option value="Admin"   {{ 'selected' if perm_val=='Admin'   else '' }}>Admin</option>
+            <option value="Usuário" {{ 'selected' if perm_val=='Usuário' else '' }}>Usuário</option>
+            <option value="Leitor"  {{ 'selected' if perm_val=='Leitor'  else '' }}>Leitor</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label class="form-label">Status*</label>
+          {% set status_val = (usuario[10] if usuario else '') %}
+          <select name="status" class="form-select" required>
+            <option value="Ativo"   {{ 'selected' if status_val=='Ativo'   else '' }}>Ativo</option>
+            <option value="Inativo" {{ 'selected' if status_val=='Inativo' else '' }}>Inativo</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="text-center mt-4 d-flex justify-content-center gap-3">
+        <button type="submit" class="btn btn-success btn-custom px-4">
+          <i class="bi bi-check-circle-fill me-2"></i> Salvar
+        </button>
+        <a href="{{ url_for('index') }}" class="btn btn-dark btn-custom px-4">
+          <i class="bi bi-arrow-left-circle me-2"></i> Voltar
+        </a>
+      </div>
     </form>
-</body>
-</html>
+  </div>
+</div>
+
+<script>
+  function toggleSenha() {
+    const inp = document.getElementById('senha');
+    const icon = document.getElementById('icon-senha');
+    if (!inp) return;
+    if (inp.type === 'password') {
+      inp.type = 'text';
+      if (icon) icon.classList.replace('bi-eye-fill', 'bi-eye-slash-fill');
+    } else {
+      inp.type = 'password';
+      if (icon) icon.classList.replace('bi-eye-slash-fill', 'bi-eye-fill');
+    }
+  }
+</script>
+{% endblock %}

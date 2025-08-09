@@ -1,41 +1,53 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Cadastro de Usuários</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <h1>Sistema de Cadastro de Usuários</h1>
+{% extends 'base.html' %}
 
-    <p><a href="/cadastrar">+ Cadastrar novo usuário</a></p>
+{% block title %}Lista de Usuários{% endblock %}
 
-    {% if usuarios %}
-        <table border="1" cellpadding="10">
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Email</th>
-                <th>Tipo</th>
-                <th>Status</th>
-                <th>Ações</th>
-            </tr>
-            {% for usuario in usuarios %}
-            <tr>
-                <td>{{ usuario[0] }}</td>
-                <td>{{ usuario[1] }}</td>
-                <td>{{ usuario[2] }}</td>
-                <td>{{ usuario[3] }}</td>
-                <td>{{ usuario[4] }}</td>
-                <td>
-                    <a href="/editar/{{ usuario[0] }}">Editar</a> |
-                    <a href="/excluir/{{ usuario[0] }}" onclick="return confirm('Tem certeza que deseja excluir este usuário?')">Excluir</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <p>Nenhum usuário cadastrado ainda.</p>
-    {% endif %}
-</body>
-</html>
+{% block content %}
+<!-- marca o body para estilos/comportamentos específicos da LISTA -->
+<script>document.body.classList.add('page-list');</script>
+
+<div class="card-list">
+  <div class="custom-header">
+    <i class="bi bi-people-fill header-icon"></i>
+    <h2 class="mb-0">Lista de Usuários</h2>
+    <div class="ms-auto">
+      <a href="/cadastrar" class="btn btn-primary">+ Novo Usuário</a>
+    </div>
+  </div>
+
+  {% if usuarios %}
+    <div class="table-scroll">
+      <table class="table">
+        <thead>
+          <tr class="table-header">
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Permissão</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for usuario in usuarios %}
+          <tr>
+            <td>{{ usuario[0] }}</td>
+            <td>{{ usuario[1] }}</td>
+            <td>{{ usuario[2] }}</td>
+            <td>{{ usuario[9] }}</td>
+            <td>{{ usuario[10] }}</td>
+            <td>
+              <a href="/editar/{{ usuario[0] }}" class="btn btn-warning btn-sm">Editar</a>
+              <a href="/excluir/{{ usuario[0] }}" class="btn btn-danger btn-sm"
+                 onclick="return confirm('Deseja excluir este usuário?')">Excluir</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="text-center mb-0">Nenhum usuário cadastrado.</p>
+  {% endif %}
+</div>
+{% endblock %}

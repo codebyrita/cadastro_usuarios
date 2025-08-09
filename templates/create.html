@@ -1,35 +1,161 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Cadastrar Usuário</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% extends 'base.html' %}
+{% block title %}Cadastro de Usuário{% endblock %}
 
+{% block content %}
+<script>document.body.classList.add('page-create');</script>
 
-</head>
-<body>
-    <h1>Cadastrar Novo Usuário</h1>
+{# --- Flash flutuante APENAS uma vez --- #}
+{% if mensagem %}
+<div id="flash-float" class="flash-float" hidden>
+  <div class="flash alert alert-{{ mensagem_tipo or 'success' }}">{{ mensagem }}</div>
+</div>
+<script>
+  (function(){
+    const box = document.getElementById('flash-float');
+    if(!box) return;
+    function positionFlash(){
+      const card = document.querySelector('.card'); // card do cadastro
+      if(!card) return;
+      const r = card.getBoundingClientRect();
+      const gap = 12;
+      box.style.position = 'fixed';
+      box.style.left = r.left + 'px';
+      box.style.width = r.width + 'px';
+      box.hidden = false; // revela pra medir
+      const h = box.offsetHeight || 0;
+      box.style.top = Math.max(10, r.top - h - gap) + 'px';
+    }
+    window.addEventListener('load', positionFlash);
+    window.addEventListener('resize', positionFlash);
 
-    <form method="POST">
-        <label>Nome:</label><br>
-        <input type="text" name="nome" required><br><br>
+    const HIDE_MS = 5000;     // some em 5s
+    const REDIRECT_MS = 6000; // redireciona após sumir
+    setTimeout(()=> box.classList.add('flash-hide'), HIDE_MS);
+    {% if redirect_after and next_url %}
+    setTimeout(()=> { window.location.href = "{{ next_url }}"; }, REDIRECT_MS);
+    {% endif %}
+  })();
+</script>
+{% endif %}
 
-        <label>Email:</label><br>
-        <input type="email" name="email" required><br><br>
+<div class="card shadow-lg p-4 align-left">
+  <div class="card-header custom-header text-white d-flex align-items-center gap-3">
+    <i class="bi bi-person-plus-fill fs-3"></i>
+    <h2 class="mb-0 fw-bold">Cadastro de Usuário</h2>
+  </div>
 
-        <label>Tipo:</label><br>
-        <select name="tipo" required>
+  <div class="card-body">
+    <form method="POST" action="{{ url_for('cadastrar') }}">
+      <div class="form-grid">
+        <!-- linha 1 -->
+        <div class="campo">
+          <label class="form-label">Nome completo*</label>
+          <input type="text" name="nome" class="form-control" required>
+        </div>
+        <div class="campo">
+          <label class="form-label">Email*</label>
+          <input type="email" name="email" class="form-control" required>
+        </div>
+
+        <!-- linha 2 -->
+        <div class="campo">
+          <label class="form-label">Usuário*</label>
+          <input type="text" name="usuario" class="form-control" required>
+        </div>
+        <div class="campo">
+          <label for="senha" class="form-label">Senha*</label>
+          <div class="input-with-eye">
+            <input
+  type="password"
+  name="senha"
+  class="form-control"
+  id="senha"
+  required
+  minlength="6"
+  maxlength="8"
+  pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{6,8}$"
+  title="A senha deve ter de 6 a 8 caracteres e conter: 1 maiúscula, 1 minúscula, 1 número e 1 símbolo."
+  autocomplete="new-password"
+/>
+
+            <span class="toggle-eye" onclick="toggleSenha()" aria-label="Mostrar/ocultar senha">
+              <i class="bi bi-eye-fill" id="icon-senha"></i>
+            </span>
+          </div>
+        </div>
+
+        <!-- linha 3 -->
+        <div class="campo">
+          <label class="form-label">Sexo</label>
+          <select name="sexo" class="form-select">
+            <option value="">Selecione</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Feminino">Feminino</option>
+            <option value="Outro">Outro</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label class="form-label">Telefone</label>
+          <input type="tel" name="telefone" class="form-control">
+        </div>
+
+        <!-- linha 4 (2 colunas) -->
+        <div class="campo span-2">
+          <label class="form-label">Endereço</label>
+          <input type="text" name="endereco" class="form-control">
+        </div>
+
+        <!-- linha 5 -->
+        <div class="campo">
+          <label class="form-label">CPF*</label>
+          <input type="text" name="cpf" class="form-control" required>
+        </div>
+        <div class="campo">
+          <label class="form-label">Permissão*</label>
+          <select name="permissao" class="form-select" required>
             <option value="Admin">Admin</option>
-            <option value="Comum">Comum</option>
-        </select><br><br>
+            <option value="Usuário">Usuário</option>
+            <option value="Leitor">Leitor</option>
+          </select>
+        </div>
 
-        <label>Status:</label><br>
-        <select name="status" required>
+        <!-- linha 6 -->
+        <div class="campo">
+          <label class="form-label">Status*</label>
+          <select name="status" class="form-select" required>
             <option value="Ativo">Ativo</option>
             <option value="Inativo">Inativo</option>
-        </select><br><br>
+          </select>
+        </div>
+        <div class="campo"><!-- pareamento --></div>
+      </div>
 
-        <button type="submit">Cadastrar</button>
+      <div class="text-center mt-5 d-flex justify-content-center gap-3">
+        <button type="submit" class="btn btn-success btn-custom px-4">
+          <i class="bi bi-check-circle-fill me-2"></i> Cadastrar
+        </button>
+        <a href="{{ url_for('index') }}" class="btn btn-dark btn-custom px-4">
+          <i class="bi bi-arrow-left-circle me-2"></i> Voltar
+        </a>
+      </div>
     </form>
-</body>
-</html>
+  </div>
+</div>
+
+<script>
+  // olho da senha
+  function toggleSenha() {
+    const senhaInput = document.getElementById("senha");
+    const icon = document.getElementById("icon-senha");
+    if (senhaInput.type === "password") {
+      senhaInput.type = "text";
+      icon.classList.remove("bi-eye-fill");
+      icon.classList.add("bi-eye-slash-fill");
+    } else {
+      senhaInput.type = "password";
+      icon.classList.remove("bi-eye-slash-fill");
+      icon.classList.add("bi-eye-fill");
+    }
+  }
+</script>
+{% endblock %}
