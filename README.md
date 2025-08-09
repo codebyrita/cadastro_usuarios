@@ -1,36 +1,68 @@
-# 👥 Sistema de Cadastro de Usuários com Flask
+# 📋 Sistema de Cadastro de Usuários
 
-Projeto desenvolvido com Flask para treinar operações CRUD (Create, Read, Update, Delete) usando banco de dados SQLite.
+![Flask](https://img.shields.io/badge/Flask-2.0+-blue)
+![Python](https://img.shields.io/badge/Python-3.10+-yellow)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple)
 
-## 🧰 Tecnologias
+Sistema web desenvolvido em **Flask** para gerenciamento de usuários, com CRUD completo (criar, listar, editar e excluir), validação de senha, prevenção de e-mails duplicados e interface responsiva.
 
-- Python + Flask
-- HTML5 + CSS3
-- SQLite
-- Deploy via Render
+## 🚀 Funcionalidades
+- Cadastro de usuários com validação de campos obrigatórios
+- Validação de senha forte (6 a 8 caracteres, maiúscula, minúscula, número e símbolo)
+- Prevenção de cadastro com e-mail duplicado
+- Edição e exclusão de registros
+- Listagem paginada de usuários
+- Mensagens de sucesso e erro automáticas (Flash)
+- Interface responsiva usando **Bootstrap 5**
 
-## 📋 Funcionalidades
+---
 
-- Cadastrar novo usuário
-- Listar todos os usuários
-- Editar dados
-- Excluir usuário
-- Interface responsiva e visual limpo
+## 🖼️ Screenshots
 
-## 📸 Preview
+### Página de Cadastro
+![Cadastro](docs/img/cadastro.png)
 
-![Preview do sistema](preview.png)
+### Lista de Usuários
+![Lista](docs/img/lista.png)
 
-## 🚀 Acesse o projeto online
+### Página de Edição
+![Edição](docs/img/editar.png)
 
-🔗 
+---
 
-## 📂 Como executar localmente
+## 🛠️ Tecnologias Utilizadas
+- **Python 3.10+**
+- **Flask**
+- **SQLite**
+- **Bootstrap 5**
+- **HTML5 / CSS3**
+- **JavaScript (Vanilla)**
+
+---
+
+## 📦 Como instalar e executar
 
 ```bash
-git clone https://github.com/seu-usuario/cadastro_usuarios.git
+# Clone este repositório
+git clone https://github.com/SEU-USUARIO/cadastro_usuarios.git
+
+# Entre na pasta
 cd cadastro_usuarios
+
+# Crie o ambiente virtual
 python -m venv venv
-venv\Scripts\activate  # ou source venv/bin/activate no Mac/Linux
+
+# Ative o ambiente virtual
+# Windows:
+venv\Scripts\activate
+# Linux/Mac:
+source venv/bin/activate
+
+# Instale as dependências
 pip install -r requirements.txt
+
+# Execute a aplicação
 python app.py
+
+Sistema disponível neste endereco:
+http://127.0.0.1:5000
