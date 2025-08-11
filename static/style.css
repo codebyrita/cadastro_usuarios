@@ -1,3 +1,5 @@
+
+
 /* Estilo geral */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -7,6 +9,13 @@ body {
     background-repeat: no-repeat;
     min-height: 100vh;
     margin: 0;
+}
+
+/* === Fix Render alignment: offsets unificados para todas as páginas === */
+:root{
+  --card-left: clamp(160px, 20vw, 290px); /* mesmo “colado à esquerda” em todas */
+  --card-top: 70px;                        /* mesma distância do topo */
+  --card-bottom-gap: 160px;                /* espaço livre inferior p/ o fundo */
 }
 
 /* Cabeçalho */
@@ -56,11 +65,12 @@ input.form-control, select.form-select { border-radius: 8px; box-shadow: none !i
 html, body { height: 100%; overflow: hidden; }
 
 /* ------ CARD (posição perfeita preservada) ------ */
+/* ------ CARD (posição perfeita preservada) ------ */
 .card{
   --col-gap: 16px;
-  --row-gap: 8px;                            /* menos espaço vertical */
-  --inp-h: clamp(34px, 4.2vh, 40px);         /* campos mais baixos */
-  --fs: clamp(14px, 1.7vh, 16px);            /* tamanho de fonte ajustável */
+  --row-gap: 8px;
+  --inp-h: clamp(34px, 4.2vh, 40px);
+  --fs: clamp(14px, 1.7vh, 16px);
 
   background: rgba(255,255,255,0.85);
   backdrop-filter: blur(20px);
@@ -68,17 +78,13 @@ html, body { height: 100%; overflow: hidden; }
   box-shadow: 0 8px 30px rgba(0,0,0,0.2);
 
   position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  left: clamp(160px, 20vw, 290px);
+  top: var(--card-top);
+  left: var(--card-left);
+  transform: none;
 
-  width: min(900px, 92vw);                   /* largura p/ 2 colunas */
-  padding: 16px 20px;                        /* padding reduzido */
-  font-size: var(--fs);
-
-  max-height: calc(100vh - 48px);            /* cabe na tela */
-  overflow: hidden;                          /* sem scroll interno */
-}
+  height: calc(100vh - var(--card-top) - var(--card-bottom-gap));
+  overflow: auto; /* rola por dentro quando precisar */
+}  /* ← FECHA AQUI o bloco .card */
 
 /* ----- GRID 2 COLUNAS paralelas ----- */
 .form-grid{
@@ -106,9 +112,19 @@ html, body { height: 100%; overflow: hidden; }
   width: 100%;
 }
 
-/* se a altura da tela for pequena, reduzimos levemente o card p/ caber */
-@media (max-height: 820px){ .card{ transform: translateY(-50%) scale(.96); transform-origin: center; } }
-@media (max-height: 760px){ .card{ transform: translateY(-50%) scale(.92); } }
+@media (max-height: 820px){
+  .card{
+    transform: scale(.96);          /* mantém redução */
+    transform-origin: top left;     /* ponto de referência no canto */
+  }
+}
+
+@media (max-height: 760px){
+  .card{
+    transform: scale(.92);
+    transform-origin: top left;
+  }
+}
 
 /* responsivo estreito: volta pra 1 coluna */
 @media (max-width: 860px){
@@ -138,14 +154,14 @@ html, body { height: 100%; overflow: hidden; }
 .card-list {
   position: fixed;
   top: 70px;                             /* início do card */
-  left: clamp(50px, 18vw, 0px);          /* sua posição ajustada */
+  left: var(--card-left);
+  height: calc(100vh - var(--card-top) - var(--bottom-gap)); /* mantém sua var local */         /* sua posição ajustada */
   width: min(960px, 92vw);
   padding: 0;                            /* header encosta nas bordas do card */
 
   /* definir um limite inferior antes da planta */
   --bottom-gap: 160px;                   /* ajuste fino: 140–200px conforme a sua tela */
-  height: calc(100vh - 70px - var(--bottom-gap));  /* card “travado” entre top e planta */
-
+  
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(20px);
   border-radius: 18px;
@@ -179,9 +195,6 @@ html, body { height: 100%; overflow: hidden; }
   border: 1px solid rgba(0,0,0,0.08);
   border-radius: 0 0 12px 12px;
 
-  background: rgba(255,255,255,0.55);
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 0 0 12px 12px;
 }
 
 /* Tabela */
@@ -238,12 +251,13 @@ html, body { height: 100%; overflow: hidden; }
 .card-edit{
   position: fixed;
   top: 70px;                              /* mesma altura da lista */
-  left: clamp(50px, 18vw, 0px);           /* mesma âncora da lista */
+  left: var(--card-left);
+  height: calc(100vh - var(--card-top) - var(--bottom-gap));
   width: min(960px, 92vw);
 
   /* altura travada até antes da planta (igual usamos na lista) */
   --bottom-gap: 160px;
-  height: calc(100vh - 70px - var(--bottom-gap));
+  
 
   background: rgba(255,255,255,0.85);
   backdrop-filter: blur(20px);
@@ -295,4 +309,5 @@ html, body { height: 100%; overflow: hidden; }
 
 .edit-user-form .form-group {
     margin-bottom: 20px; /* espaço entre os campos */
+
 }

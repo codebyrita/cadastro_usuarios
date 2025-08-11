@@ -66,3 +66,10 @@ python app.py
 
 Sistema disponível neste endereco:
 http://127.0.0.1:5000
+
+
+🌍 Deploy no Render
+🔗 Acesse aqui: 
+
+📄 Licença
+Este projeto está licenciado sob a MIT License — sinta-se livre para usar e modificar.
