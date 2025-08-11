@@ -11,11 +11,10 @@ body {
     margin: 0;
 }
 
-/* === Fix Render alignment: offsets unificados para todas as páginas === */
 :root{
-  --card-left: clamp(160px, 20vw, 290px); /* mesmo “colado à esquerda” em todas */
-  --card-top: 70px;                        /* mesma distância do topo */
-  --card-bottom-gap: 160px;                /* espaço livre inferior p/ o fundo */
+  --card-left: 260px;   /* desktop típico (1366–1440) */
+  --card-top: 70px;
+  --card-bottom-gap: 160px;
 }
 
 /* Cabeçalho */
@@ -77,13 +76,16 @@ html, body { height: 100%; overflow: hidden; }
   border-radius: 18px;
   box-shadow: 0 8px 30px rgba(0,0,0,0.2);
 
-  position: fixed;
+ position: fixed;
   top: var(--card-top);
   left: var(--card-left);
-  transform: none;
-
+  width: min(960px, 92vw);
   height: calc(100vh - var(--card-top) - var(--card-bottom-gap));
   overflow: auto; /* rola por dentro quando precisar */
+  height: auto;
+  max-height: none;
+  overflow: visible;
+}
 }  /* ← FECHA AQUI o bloco .card */
 
 /* ----- GRID 2 COLUNAS paralelas ----- */
@@ -112,26 +114,19 @@ html, body { height: 100%; overflow: hidden; }
   width: 100%;
 }
 
-@media (max-height: 820px){
-  .card{
-    transform: scale(.96);          /* mantém redução */
-    transform-origin: top left;     /* ponto de referência no canto */
-  }
+/* telas muito grandes (≥1600): puxa um pouco mais p/ a esquerda */
+@media (min-width: 1600px){
+  :root{ --card-left: 300px; }
 }
 
-@media (max-height: 760px){
-  .card{
-    transform: scale(.92);
-    transform-origin: top left;
-  }
+/* telas 1280–1365 */
+@media (max-width: 1365px){
+  :root{ --card-left: 220px; }
 }
 
-/* responsivo estreito: volta pra 1 coluna */
-@media (max-width: 860px){
-  html, body{ overflow: auto; }
-  .card{ left: 16px; right: 16px; width: auto; max-height: none; }
-  .form-grid{ grid-template-columns: 1fr; }
-  .span-2{ grid-column: auto; }
+/* tablets/≤1024: aproxima sem “colar” */
+@media (max-width: 1024px){
+  :root{ --card-left: 120px; }
 }
 
 /* garante que cada “campo” empilhe label + input certinho */
@@ -152,12 +147,14 @@ html, body { height: 100%; overflow: hidden; }
 /* LISTA: fixa até antes da planta + scroll interno */
 /* ───────────────────────────────────────────── */
 .card-list {
+  .card-list{
   position: fixed;
-  top: 70px;                             /* início do card */
+  top: var(--card-top);
   left: var(--card-left);
-  height: calc(100vh - var(--card-top) - var(--bottom-gap)); /* mantém sua var local */         /* sua posição ajustada */
   width: min(960px, 92vw);
-  padding: 0;                            /* header encosta nas bordas do card */
+
+  --bottom-gap: 160px;
+  height: calc(100vh - var(--card-top) - var(--bottom-gap));
 
   /* definir um limite inferior antes da planta */
   --bottom-gap: 160px;                   /* ajuste fino: 140–200px conforme a sua tela */
@@ -170,6 +167,8 @@ html, body { height: 100%; overflow: hidden; }
   display: flex;                         /* header + lista */
   flex-direction: column;
   overflow: hidden;                      /* nada vaza do card */
+
+  .table-scroll{ overflow-y: auto; }
 }
 
 /* Cabeçalho igual ao do cadastro */
@@ -250,13 +249,16 @@ html, body { height: 100%; overflow: hidden; }
 /* ── EDIT: card alinhado como a LISTA ───────────────────────── */
 .card-edit{
   position: fixed;
-  top: 70px;                              /* mesma altura da lista */
+  top: var(--card-top);
   left: var(--card-left);
-  height: calc(100vh - var(--card-top) - var(--bottom-gap));
   width: min(960px, 92vw);
 
-  /* altura travada até antes da planta (igual usamos na lista) */
   --bottom-gap: 160px;
+  height: calc(100vh - var(--card-top) - var(--bottom-gap));
+
+  /* ... resto do visual igual ... */
+}
+
   
 
   background: rgba(255,255,255,0.85);
