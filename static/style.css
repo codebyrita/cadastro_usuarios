@@ -13,6 +13,8 @@ body {
   --card-left: 260px;   /* desktop típico (1366–1440) */
   --card-top: 70px;
   --card-bottom-gap: 160px;
+  --list-left-adjust: -250px; /* ajuste horizontal da lista */
+  --edit-left-adjust: -250px; /* ajuste horizontal do editar */
 }
 
 /* Cabeçalho */
@@ -26,7 +28,6 @@ body {
 
 .card-header h2 { flex-grow: 1; }
 
-/* Ícone grande no topo esquerdo */
 .header-icon {
     font-size: 2rem;
     background: white;
@@ -36,7 +37,6 @@ body {
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
-/* Botões */
 .btn { border-radius: 8px; transition: all 0.3s ease; }
 .btn:hover { transform: scale(1.03); opacity: 0.95; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 .btn-primary { background-color: #007cf0; border: none; }
@@ -44,21 +44,16 @@ body {
 .btn-success:hover { background-color: #2ecc71; }
 .btn-danger:hover { background-color: #e74c3c; }
 
-/* Campos de formulário */
 input.form-control, select.form-select { border-radius: 8px; box-shadow: none !important; }
 
-/* Alerta flash */
 .alert { border-radius: 8px; font-weight: 500; }
 
-/* Animação sutil para botões */
 .custom-hover { transition: all 0.3s ease-in-out; }
 .custom-hover:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
 
-/* Classes auxiliares */
 .left-card { margin-left: 3rem; margin-right: auto; max-width: 700px; }
 .align-left { margin-left: 0; margin-right: auto; max-width: 700px; }
 
-/* página não rola */
 html, body { height: 100%; overflow: hidden; }
 
 /* ------ CARD ------ */
@@ -79,7 +74,7 @@ html, body { height: 100%; overflow: hidden; }
   width: min(960px, 92vw);
   height: auto;
   max-height: none;
-  overflow: visible; /* garante que botões não sumam */
+  overflow: visible;
 }
 
 /* GRID 2 COLUNAS */
@@ -117,130 +112,191 @@ html, body { height: 100%; overflow: hidden; }
 }
 
 .campo { display:flex; flex-direction:column; }
-
 .input-with-eye { position: relative; }
-.input-with-eye .form-control { padding-right: 42px; }
-.input-with-eye .toggle-eye {
-  position:absolute; top:50%; right:10px; transform:translateY(-50%); cursor:pointer;
-}
-
-.form-grid input.form-control,
-.form-grid select.form-select { height: var(--inp-h); line-height: 1.2; }
 
 /* LISTA */
 .card-list {
-  position: fixed;
-  top: var(--card-top);
-  left: var(--card-left);
-  width: min(960px, 92vw);
-  height: calc(100vh - var(--card-top) - var(--card-bottom-gap));
-  background: rgba(255, 255, 255, 0.85);
+  position: fixed !important;
+  top: var(--card-top) !important;
+  left: calc(var(--card-left) + var(--list-left-adjust)) !important;
+  width: min(960px, 92vw) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: calc(100vh - var(--card-top) - var(--card-bottom-gap)) !important;
+  background: rgba(255,255,255,0.85);
   backdrop-filter: blur(20px);
   border-radius: 18px;
   box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  overflow: hidden !important;
 }
 
-.card-list .custom-header {
-  display:flex; align-items:center; gap:14px;
-  color:#fff; font-weight:700; font-size:1.6rem;
-  background: linear-gradient(90deg,#1aa7ff,#00d1ff);
-  border-radius: 18px 18px 0 0;
-  padding: 12px 18px;
-}
-
-.card-list .header-icon {
-  font-size:1.6rem; background:#fff; color:#0d6efd;
-  padding:8px; border-radius:50%;
-  box-shadow:0 2px 6px rgba(0,0,0,0.18);
-}
-
-.table-scroll {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto;
-  background: rgba(255,255,255,0.55);
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 0 0 12px 12px;
-}
-
-.table { width:100%; border-collapse:collapse; }
+.table-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; background: rgba(255,255,255,.55); border: 1px solid rgba(0,0,0,.08); border-radius: 0 0 12px 12px; }
+.table { width: 100%; border-collapse: collapse; }
 .table th, .table td { padding: 12px 14px; }
-.table thead {
-  position: sticky; top: 0; z-index: 1;
-  background: #e7f3ff;
-}
-.table thead th {
-  position: sticky; top: 0;
-  background: #e7f3ff;
-}
-.table tbody tr:nth-child(odd) { background: rgba(0,0,0,0.03); }
-.table tbody tr:hover { background: rgba(0,0,0,0.06); }
+.table thead { position: sticky; top: 0; z-index: 1; background: #e7f3ff; }
+.table thead th { position: sticky; top: 0; background: #e7f3ff; }
 
-.table .btn { border-radius:8px; padding:6px 12px; border:none; }
-.table .btn-warning { background:#f4c542; }
-.table .btn-danger { background:#e74c3c; }
-
-@media (max-width: 860px) {
-  .card-list {
-    left:16px; right:16px; width:auto;
-    top:60px;
-    --bottom-gap: 120px;
-    height: calc(100vh - 60px - var(--bottom-gap));
-  }
-}
-
-/* EDIT */
-.card-edit {
-  position: fixed;
-  top: var(--card-top);
-  left: var(--card-left);
-  width: min(960px, 92vw);
-  height: calc(100vh - var(--card-top) - var(--card-bottom-gap));
+/* === EDITAR (MESMO POSICIONAMENTO DA LISTA) === */
+.page-edit .card-edit {
+  position: fixed !important;
+  top: var(--card-top) !important;
+  left: calc(var(--card-left) + var(--edit-left-adjust)) !important;
+  width: min(960px, 92vw) !important;
   background: rgba(255,255,255,0.85);
   backdrop-filter: blur(20px);
   border-radius: 18px;
   box-shadow: 0 8px 30px rgba(0,0,0,0.2);
   display: flex;
   flex-direction: column;
+  height: calc(100vh - var(--card-top) - var(--card-bottom-gap)) !important;
   overflow: hidden;
 }
 
-.card-edit .custom-header {
-  display:flex; align-items:center; gap:14px;
-  color:#fff; font-weight:700; font-size:1.6rem;
-  background: linear-gradient(90deg,#1aa7ff,#00d1ff);
-  border-radius: 18px 18px 0 0;
-  padding: 12px 18px;
-}
-
-.edit-scroll {
+.page-edit .card-edit .edit-scroll {
   flex: 1 1 auto;
   min-height: 0;
-  overflow: auto;
+  overflow-y: auto !important;
   padding: 16px 20px;
 }
 
-@media (max-width: 860px) {
-  .card-edit {
-    left:16px; right:16px; width:auto;
-    top:60px;
-    --bottom-gap: 120px;
-    height: calc(100vh - 60px - var(--bottom-gap));
-  }
+/* Restaurar faixa do Editar e Lista para o padrão do Cadastro */
+.card-list .custom-header,
+.page-edit .card-edit .custom-header{
+  background: linear-gradient(90deg,#00B0FF,#00D2FF) !important;
+  color: #fff !important;
+  padding: 14px 18px !important;
+  border-radius: 18px 18px 0 0 !important;
 }
 
-/* FLASH */
-.flash-float { z-index: 9999; pointer-events: none; }
-.flash-float .flash {
-  pointer-events: auto;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.18);
-  animation: flash-in .22s ease-out forwards;
+/* Ajusta o layout da faixa da Lista */
+.card-list .custom-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Ícone + título à esquerda, botão à direita */
+  gap: 20px; /* Espaço maior entre o ícone e o título */
 }
-.flash-hide .flash { animation: flash-out .3s ease-in forwards; }
 
-@keyframes flash-in { from{opacity:0; transform: translateY(-6px);} to{opacity:1; transform:none;} }
-@keyframes flash-out{ to{opacity:0; transform: translateY(-6px);} }
+/* Aumenta o espaço entre o ícone e o texto "Lista de Usuários" */
+.card-list .custom-header i {
+  margin-right: 14px; /* controla o espaçamento */
+}
+
+/* Garante que o botão "Novo Usuário" esteja sempre à direita */
+.card-list .custom-header .btn-novo {
+  margin-left: auto;
+}
+
+/* Aumentar espaço entre ícone e título apenas no Editar */
+.card-edit .custom-header {
+  display: flex;
+  align-items: center;
+  gap: 14px; /* controla a distância entre o ícone e o texto */
+}
+
+.card-edit .custom-header .header-icon {
+  font-size: 1.6rem; /* opcional: deixa o ícone maior se quiser */
+}
+
+/* Espaço entre colunas e linhas na página Editar */
+.page-edit .form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* duas colunas */
+  gap: 20px 30px; /* 20px vertical, 30px horizontal (colunas) */
+}
+
+.page-edit .form-grid .campo {
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* Espaço entre colunas e linhas no cadastro */
+.page-create .form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 30px; /* 20px vertical / 30px horizontal */
+}
+
+/* Cadastro: ícone do olho DENTRO do input de senha */
+.page-create .input-with-eye{
+  position: relative !important;
+  display: block;
+}
+.page-create .input-with-eye input.form-control{
+  padding-right: 44px !important;  /* espaço para o ícone */
+}
+.page-create .input-with-eye .toggle-eye{
+  position: absolute !important;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  line-height: 1;
+  cursor: pointer;
+}
+.page-create .input-with-eye .toggle-eye i{
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+/* Cadastro: espaço entre colunas e linhas do grid */
+.page-create .form-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 30px;  /* 20px vertical | 30px horizontal */
+}
+
+
+/* EDITAR: rolagem sempre visível dentro do corpo do card */
+.page-edit .card-edit{
+  height: calc(100vh - var(--card-top) - var(--card-bottom-gap));
+}
+.page-edit .card-edit .edit-scroll{
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: scroll;           /* sempre mostra a barra */
+  scrollbar-gutter: stable;     /* evita pulo no layout */
+}
+
+/* LISTA: rolagem sempre visível na área após o header */
+.card-list {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--card-top) - var(--card-bottom-gap));
+}
+
+.card-list > .custom-header {
+  flex: 0 0 auto;
+}
+
+.card-list > .custom-header + * {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: scroll;           /* sempre mostra a barra */
+  scrollbar-gutter: stable;     /* evita pulo no layout */
+}
+
+/* Se você usa .table-scroll, garantimos também nela */
+.card-list > .table-scroll {
+  overflow-y: scroll !important;
+  scrollbar-gutter: stable;
+}
+
+/* === OVERRIDE SEGURO (mantém as posições que você aprovou) === */
+
+/* ajuste que você já usa; mantenha o valor que funcionou aí */
+:root{
+  --list-left-adjust: -250px;
+  --edit-left-adjust: -250px;
+}
+
+/* LISTA: mantém exatamente a mesma posição */
+.card-list{
+  position: fixed !important;
+  left: calc(var(--card-left) + var(--list-left-adjust)) !important;
+}
+
+/* EDITAR: mantém exatamente a mesma posição */
+.page-edit .card-edit{
+  position: fixed !important;
+  left: calc(var(--card-left) + var(--edit-left-adjust)) !important;
+}

@@ -4,19 +4,6 @@
 {% block content %}
 <script>document.body.classList.add('page-edit');</script>
 
-<style>
-/* Aplica só na página de edição */
-.page-edit .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px 15px; /* 20px vertical, 15px horizontal */
-}
-
-
-.page-edit .form-label {
-    margin-bottom: 6px; /* afasta o label do input */
-}
-</style>
 
 {% if mensagem %}
 <div id="flash-float" class="flash-float" hidden>
