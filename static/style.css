@@ -306,9 +306,9 @@ html, body { height: 100%; overflow: hidden; }
 /* Ajuste fino aqui: troque os px se quiser mais/menos à esquerda. */
 :root{
   --top-fixed: 70px;
-  --create-left: 260px;  /* Cadastro */
-  --list-left: 10px;     /* Lista (você usou -250px de ajuste = ~10px final) */
-  --edit-left: 10px;     /* Editar idem */
+  --create-left: 150px;  /* Cadastro */
+  --list-left: 40px;     /* Lista (você usou -250px de ajuste = ~10px final) */
+  --edit-left: 40px;     /* Editar idem */
 }
 
 /* Cadastro – fica como no local */
