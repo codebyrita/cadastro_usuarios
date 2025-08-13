@@ -300,3 +300,57 @@ html, body { height: 100%; overflow: hidden; }
   position: fixed !important;
   left: calc(var(--card-left) + var(--edit-left-adjust)) !important;
 }
+
+
+/* ===== HOTFIX RENDER: travar posições por página ===== */
+/* Ajuste fino aqui: troque os px se quiser mais/menos à esquerda. */
+:root{
+  --top-fixed: 70px;
+  --create-left: 260px;  /* Cadastro */
+  --list-left: 10px;     /* Lista (você usou -250px de ajuste = ~10px final) */
+  --edit-left: 10px;     /* Editar idem */
+}
+
+/* Cadastro – fica como no local */
+body.page-create .card{
+  position: fixed !important;
+  top: var(--top-fixed) !important;
+  left: var(--create-left) !important;
+  width: min(960px, 92vw) !important;
+}
+
+/* Lista – mesma posição do que você gostou e com scroll visível */
+body.page-list .card-list{
+  position: fixed !important;
+  top: var(--top-fixed) !important;
+  left: var(--list-left) !important;
+  width: min(960px, 92vw) !important;
+  height: calc(100vh - var(--top-fixed) - var(--card-bottom-gap)) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important; /* o container não rola */
+}
+body.page-list .custom-header + *{
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;   /* a área da tabela rola */
+}
+body.page-list .table-scroll{
+  min-height: 320px !important;  /* a barrinha já aparece “vazia” */
+  overflow-y: auto !important;
+}
+
+/* Editar – igual à lista (mais à esquerda) e com rolagem só no corpo */
+body.page-edit .card-edit{
+  position: fixed !important;
+  top: var(--top-fixed) !important;
+  left: var(--edit-left) !important;
+  width: min(960px, 92vw) !important;
+  height: calc(100vh - var(--top-fixed) - var(--card-bottom-gap)) !important;
+  overflow: hidden !important;   /* card não rola */
+}
+body.page-edit .edit-scroll{
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto !important;   /* conteúdo rola */
+}
