@@ -349,8 +349,67 @@ body.page-edit .card-edit{
   height: calc(100vh - var(--top-fixed) - var(--card-bottom-gap)) !important;
   overflow: hidden !important;   /* card não rola */
 }
-body.page-edit .edit-scroll{
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto !important;   /* conteúdo rola */
+
+
+
+/* ============================
+   CONSISTÊNCIA LOCAL x RENDER
+   Neutraliza o container do Bootstrap e trava offsets
+   ============================ */
+
+/* Desliga o .container py-5 d-flex justify-content-start do base.html nessas páginas */
+.page-create .container,
+.page-list   .container,
+.page-edit   .container{
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: block !important;          /* remove o d-flex do base */
+  justify-content: initial !important; /* remove justify-content-start */
 }
+
+/* Reforça as variáveis de posição (use os mesmos valores do seu local) */
+:root{
+  --card-left: 210px;     /* ajuste fino se precisar */
+  --card-top: 50px;
+  --card-bottom-gap: 100px;
+}
+
+/* ===== Cadastro (já estava ok, só travando explicitamente) ===== */
+.page-create .card{
+  position: fixed !important;
+  top: var(--card-top) !important;
+  left: var(--card-left) !important;
+  transform: none !important;
+}
+
+/* ===== Lista (posição + rolagem interna sempre visível) ===== */
+.page-list .card-list{
+  position: fixed !important;
+  top: var(--card-top) !important;
+  left: var(--card-left) !important;
+  width: min(960px, 92vw) !important;
+
+  height: calc(100vh - var(--card-top) - var(--card-bottom-gap)) !important;
+  overflow: hidden !important;     /* card não rola */
+}
+.page-list .card-list > .custom-header{
+  flex: 0 0 auto !important;
+}
+.page-list .card-list > .custom-header + *{
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;     /* rolagem aparece mesmo sem conteúdo extra */
+}
+
+/* ===== Editar (mesma posição do cadastro + rolagem só no corpo) ===== */
+.page-edit .card-edit{
+  position: fixed !important;
+  top: var(--card-top) !important;
+  left: var(--card-left) !important;
+  width: min(960px, 92vw) !important;
+
+  height: calc(100vh - var(--card-top) - var(--card-bottom-gap)) !important;
+  overflow: hidden !important;     /* card não rola */
+}
+
