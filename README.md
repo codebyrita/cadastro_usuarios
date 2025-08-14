@@ -1,75 +1,63 @@
-# 📋 Sistema de Cadastro de Usuários
+# Sistema de Cadastro de Usuários
 
-![Flask](https://img.shields.io/badge/Flask-2.0+-blue)
-![Python](https://img.shields.io/badge/Python-3.10+-yellow)
-![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple)
+Projeto desenvolvido com **Flask** para gerenciar um CRUD completo de usuários: criar, listar, editar e excluir registros.  
+Inclui interface moderna e responsiva, integração com banco de dados e deploy no Render.
 
-Sistema web desenvolvido em **Flask** para gerenciamento de usuários, com CRUD completo (criar, listar, editar e excluir), validação de senha, prevenção de e-mails duplicados e interface responsiva.
+## Deploy
+🔗 **Acesse o sistema aqui:** [Clique para abrir](https://cadastro-usuarios-6srh.onrender.com)
 
-## 🚀 Funcionalidades
-- Cadastro de usuários com validação de campos obrigatórios
-- Validação de senha forte (6 a 8 caracteres, maiúscula, minúscula, número e símbolo)
-- Prevenção de cadastro com e-mail duplicado
-- Edição e exclusão de registros
-- Listagem paginada de usuários
-- Mensagens de sucesso e erro automáticas (Flash)
-- Interface responsiva usando **Bootstrap 5**
+## Tecnologias Utilizadas
+- Python 3
+- Flask
+- HTML / CSS
+- Bootstrap
+- PostgreSQL (Render)
+- Gunicorn
 
----
+## Funcionalidades
+- Cadastro de novos usuários
+- Listagem de usuários cadastrados
+- Edição de informações
+- Exclusão de usuários
+- Layout moderno e responsivo
 
-## 🖼️ Screenshots
+## Demonstração
 
-### Página de Cadastro
-![Cadastro](docs/img/cadastro.png)
+### 1. Tela de Cadastro
+![Tela de Cadastro](docs/imagem1.png)
 
-### Lista de Usuários
-![Lista](docs/img/lista.png)
+### 2. Tela de Lista
+![Tela de Lista](docs/imagem2.png)
 
-### Página de Edição
-![Edição](docs/img/editar.png)
-
----
-
-## 🛠️ Tecnologias Utilizadas
-- **Python 3.10+**
-- **Flask**
-- **SQLite**
-- **Bootstrap 5**
-- **HTML5 / CSS3**
-- **JavaScript (Vanilla)**
+### 3. Tela de Edição
+![Tela de Edição](docs/imagem3.png)
 
 ---
 
-## 📦 Como instalar e executar
+## Como Rodar Localmente
 
 ```bash
-# Clone este repositório
+# Clonar o repositório
 git clone https://github.com/SEU-USUARIO/cadastro_usuarios.git
 
-# Entre na pasta
+# Entrar na pasta
 cd cadastro_usuarios
 
-# Crie o ambiente virtual
+# Criar ambiente virtual
 python -m venv venv
 
-# Ative o ambiente virtual
+# Ativar ambiente virtual
 # Windows:
 venv\Scripts\activate
 # Linux/Mac:
 source venv/bin/activate
 
-# Instale as dependências
+# Instalar dependências
 pip install -r requirements.txt
 
-# Execute a aplicação
+# Rodar o projeto
 python app.py
 
-Sistema disponível neste endereco:
-http://127.0.0.1:5000
+Autor
 
-
-🌍 Deploy no Render
-🔗 Acesse aqui: 
-
-📄 Licença
-Este projeto está licenciado sob a MIT License — sinta-se livre para usar e modificar.
+Desenvolvido por codebyrita
