@@ -416,28 +416,38 @@ body.page-edit .card-edit{
    Deixa os 3 cards menores e na mesma posição que você gostou
    ================================ */
 @media (min-width: 1600px) {
-  :root{
+  :root {
     /* se quiser mais/menos “redução”, ajuste este scale */
-    --ui-scale: 0.8;      /* 0.8 ≈ zoom 80% */
-    --ui-nudge-left: 60px;/* compensação p/ manter o mesmo “colar à esquerda” */
+    --ui-scale: 0.8;       /* 0.8 ≈ zoom 80% */
+    --ui-nudge-left: 60px; /* compensação p/ manter o mesmo “colar à esquerda” */
+  }
+
+  /* Neutraliza container do Bootstrap nessas páginas */
+  .page-create .container,
+  .page-list .container,
+  .page-edit .container {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+    justify-content: initial !important;
   }
 
   /* Aplica a “redução” só nos cards */
   .page-create .card,
   .page-edit  .card-edit,
-  .page-list  .card-list{
+  .page-list  .card-list {
     transform: scale(var(--ui-scale));
-    transform-origin: top left;     /* encolhe a partir do canto superior esquerdo */
+    transform-origin: top left; /* encolhe a partir do canto superior esquerdo */
   }
 
-  /* Compensa a posição para não “descolar” da esquerda
-     (ajuste fino: aumente/diminua --ui-nudge-left se precisar) */
-  .page-create .card{ left: calc(var(--card-left) + var(--ui-nudge-left)) !important; }
+  /* Compensa a posição para não “descolar” da esquerda */
+  .page-create .card    { left: calc(var(--card-left) + var(--ui-nudge-left)) !important; }
   .page-list  .card-list{ left: calc(var(--card-left) + var(--ui-nudge-left)) !important; }
   .page-edit  .card-edit{ left: calc(var(--card-left) + var(--ui-nudge-left)) !important; }
 
-  /* Opcional: limita larguras máximas para não “estourar” em telas absurdamente grandes */
-  .page-create .card{ max-width: 900px; }
+  /* Limita larguras máximas para não “estourar” */
+  .page-create .card    { max-width: 900px; }
   .page-list  .card-list{ max-width: 980px; }
   .page-edit  .card-edit{ max-width: 880px; }
 }
