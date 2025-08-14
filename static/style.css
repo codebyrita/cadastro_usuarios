@@ -410,3 +410,34 @@ body.page-edit .card-edit{
   height: auto !important;   /* altura ajusta ao conteúdo */
   overflow: visible !important; /* remove barra de rolagem */
 }
+
+/* ================================
+   Ajuste visual p/ telas MUITO largas (≈zoom 80%)
+   Deixa os 3 cards menores e na mesma posição que você gostou
+   ================================ */
+@media (min-width: 1600px) {
+  :root{
+    /* se quiser mais/menos “redução”, ajuste este scale */
+    --ui-scale: 0.8;      /* 0.8 ≈ zoom 80% */
+    --ui-nudge-left: 60px;/* compensação p/ manter o mesmo “colar à esquerda” */
+  }
+
+  /* Aplica a “redução” só nos cards */
+  .page-create .card,
+  .page-edit  .card-edit,
+  .page-list  .card-list{
+    transform: scale(var(--ui-scale));
+    transform-origin: top left;     /* encolhe a partir do canto superior esquerdo */
+  }
+
+  /* Compensa a posição para não “descolar” da esquerda
+     (ajuste fino: aumente/diminua --ui-nudge-left se precisar) */
+  .page-create .card{ left: calc(var(--card-left) + var(--ui-nudge-left)) !important; }
+  .page-list  .card-list{ left: calc(var(--card-left) + var(--ui-nudge-left)) !important; }
+  .page-edit  .card-edit{ left: calc(var(--card-left) + var(--ui-nudge-left)) !important; }
+
+  /* Opcional: limita larguras máximas para não “estourar” em telas absurdamente grandes */
+  .page-create .card{ max-width: 900px; }
+  .page-list  .card-list{ max-width: 980px; }
+  .page-edit  .card-edit{ max-width: 880px; }
+}
