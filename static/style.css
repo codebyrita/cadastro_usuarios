@@ -71,7 +71,7 @@ html, body { height: 100%; overflow: hidden; }
   position: fixed;
   top: var(--card-top);
   left: var(--card-left);
-  width: min(960px, 92vw);
+  width: min(760px, 92vw);
   height: auto;
   max-height: none;
   overflow: visible;
@@ -302,152 +302,15 @@ html, body { height: 100%; overflow: hidden; }
 }
 
 
-/* ===== HOTFIX RENDER: travar posições por página ===== */
-/* Ajuste fino aqui: troque os px se quiser mais/menos à esquerda. */
-:root{
-  --top-fixed: 70px;
-  --create-left: 150px;  /* Cadastro */
-  --list-left: 40px;     /* Lista (você usou -250px de ajuste = ~10px final) */
-  --edit-left: 40px;     /* Editar idem */
-}
-
-/* Cadastro – fica como no local */
-body.page-create .card{
-  position: fixed !important;
-  top: var(--top-fixed) !important;
-  left: var(--create-left) !important;
-  width: min(960px, 92vw) !important;
-}
-
-/* Lista – mesma posição do que você gostou e com scroll visível */
-body.page-list .card-list{
-  position: fixed !important;
-  top: var(--top-fixed) !important;
-  left: var(--list-left) !important;
-  width: min(960px, 92vw) !important;
-  height: calc(100vh - var(--top-fixed) - var(--card-bottom-gap)) !important;
-  display: flex !important;
-  flex-direction: column !important;
-  overflow: hidden !important; /* o container não rola */
-}
-body.page-list .custom-header + *{
-  flex: 1 1 auto !important;
-  min-height: 0 !important;
-  overflow-y: auto !important;   /* a área da tabela rola */
-}
-body.page-list .table-scroll{
-  min-height: 320px !important;  /* a barrinha já aparece “vazia” */
-  overflow-y: auto !important;
-}
-
-/* Editar – igual à lista (mais à esquerda) e com rolagem só no corpo */
-body.page-edit .card-edit{
-  position: fixed !important;
-  top: var(--top-fixed) !important;
-  left: var(--edit-left) !important;
-  width: min(960px, 92vw) !important;
-  height: calc(100vh - var(--top-fixed) - var(--card-bottom-gap)) !important;
-  overflow: hidden !important;   /* card não rola */
-}
-
-
-
-/* ============================
-   CONSISTÊNCIA LOCAL x RENDER
-   Neutraliza o container do Bootstrap e trava offsets
-   ============================ */
-.page-create .container,
-.page-list .container,
-.page-edit .container {
-  max-width: 100% !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  display: block !important;          /* remove o d-flex do base */
-  justify-content: initial !important; /* remove justify-content-start */
-}
-
-/* Reforça as variáveis de posição */
-:root {
-  --card-left: 210px;
-  --card-top: 50px;
-  --card-bottom-gap: 100px;
-}
-
-/* ===== Cadastro ===== */
+/* CADASTRO — aumentar altura e garantir botões dentro */
 .page-create .card {
-  position: fixed !important;
-  top: var(--card-top) !important;
-  left: var(--card-left) !important;
-  transform: none !important;
-  width: 700px !important;   /* menor largura */
-  height: auto !important;   /* altura ajusta ao conteúdo */
+  height: calc(100vh - var(--card-top) - 30px) !important; /* de 90px para 60px → +30px de altura */
+  max-height: none !important;
+  overflow: visible !important;
+  padding-bottom: 100px; /* mais espaço no fundo p/ botões */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* empurra botões para dentro do card */
 }
 
-/* ===== Lista ===== */
-.page-list .card-list {
-  position: fixed !important;
-  top: var(--card-top) !important;
-  left: var(--card-left) !important;
-  width: 800px !important;   /* menor largura */
-  height: calc(90vh - var(--card-top)) !important;
-  overflow: hidden !important;
-}
-.page-list .card-list > .custom-header {
-  flex: 0 0 auto !important;
-}
-.page-list .card-list > .custom-header + * {
-  flex: 1 1 auto !important;
-  min-height: 0 !important;
-  overflow-y: auto !important;
-}
 
-/* ===== Editar ===== */
-.page-edit .card-edit {
-  position: fixed !important;
-  top: var(--card-top) !important;
-  left: var(--card-left) !important;
-  width: 700px !important;   /* menor largura */
-  height: auto !important;   /* altura ajusta ao conteúdo */
-  overflow: visible !important; /* remove barra de rolagem */
-}
-
-/* ================================
-   Ajuste visual p/ telas MUITO largas (≈zoom 80%)
-   Deixa os 3 cards menores e na mesma posição que você gostou
-   ================================ */
-@media (min-width: 1600px) {
-  :root {
-    /* se quiser mais/menos “redução”, ajuste este scale */
-    --ui-scale: 0.8;       /* 0.8 ≈ zoom 80% */
-    --ui-nudge-left: 60px; /* compensação p/ manter o mesmo “colar à esquerda” */
-  }
-
-  /* Neutraliza container do Bootstrap nessas páginas */
-  .page-create .container,
-  .page-list .container,
-  .page-edit .container {
-    max-width: 100% !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    display: block !important;
-    justify-content: initial !important;
-  }
-
-  /* Aplica a “redução” só nos cards */
-  .page-create .card,
-  .page-edit  .card-edit,
-  .page-list  .card-list {
-    transform: scale(var(--ui-scale));
-    transform-origin: top left; /* encolhe a partir do canto superior esquerdo */
-  }
-
-  /* Compensa a posição para não “descolar” da esquerda */
-  .page-create .card    { left: calc(var(--card-left) + var(--ui-nudge-left)) !important; }
-  .page-list  .card-list{ left: calc(var(--card-left) + var(--ui-nudge-left)) !important; }
-  .page-edit  .card-edit{ left: calc(var(--card-left) + var(--ui-nudge-left)) !important; }
-
-  /* Limita larguras máximas para não “estourar” */
-  .page-create .card    { max-width: 900px; }
-  .page-list  .card-list{ max-width: 980px; }
-  .page-edit  .card-edit{ max-width: 880px; }
-}
